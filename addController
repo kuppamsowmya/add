@@ -7,3 +7,61 @@
         camDTO = hiposService.createSaveCountryDetails(saveCountryDetails,userId);
         return ResponseEntity.status(200).body(camDTO);
     }
+
+ @RequestMapping(path = "/countryExport", method = RequestMethod.GET)
+    public ResponseEntity countryExport(@RequestParam(value = "type")String type,
+                                      @RequestParam(value="val")String countrySearchText,
+                                        @RequestParam(value = "statustype")String statustype) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if(StringUtils.equalsIgnoreCase(type,"Pdf")){
+            hiposService.downloadCountryPdf(outputStream,countrySearchText,statustype);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "country.pdf" + "\"");
+        }
+        else if(StringUtils.equalsIgnoreCase(type,"Excel")){
+            hiposService.downloadCountryExcelSheet(outputStream,countrySearchText,statustype);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "country.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    } 
+    
+    @RequestMapping(value = "/getPaginatedCountryList",method = RequestMethod.GET,produces="application/json")
+    public PaginatedResponsePojo getPaginatedCountryList(@RequestAttribute("companyName") String companyName,
+                                         @RequestParam(value = "countrySearchText") String countrySearchText,
+                                         @RequestAttribute("userId") int userId,
+                                         @PathVariable(value = "custId") int custId,
+                                         @RequestParam(value="type")String type,
+                                         @Valid BasePojo basePojo) {
+
+        hiposService.setCompanyName(companyName);
+        hiposService.getCompanyInfoObj(userId);
+        UserAccountSetup userAccObj= hiposService.getUserAccountSetupObj(userId);
+        return hiposService.retrieveCountryListByNameOrCode(countrySearchText,custId,userAccObj, basePojo,type);
+    }
+    
+    @RequestMapping(value = "/countryImportSave" ,method =RequestMethod.POST)
+    public ResponseEntity saveCountryImport(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            addNewItemDTO itemDTO = null;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 2; i < sheet.getLastRowNum() + 1; i++) {
+                Row row = sheet.getRow(i);
+                Cell countryname = row.getCell(0);
+                Cell status = row.getCell(1);
+                CountryDTO countrydto = new CountryDTO();
+                countrydto.setCountryName(countryname == null ? null : countryname.toString());
+                countrydto.setStatus(status == null ? null : status.toString());
+                hiposService.createSaveImportCountryDetails(countrydto, 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
