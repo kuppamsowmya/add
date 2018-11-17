@@ -1,0 +1,31 @@
+public CountryDTO saveOrUpDateCountry(CountryDTO saveCountryDetails,int userId,CompanyInfo companyInfo) {
+    Country country = null;
+    try {
+
+        if (saveCountryDetails.getCountryId() != null) {
+            boolean b = checkDuplicatescountry(saveCountryDetails.getCountryName(), saveCountryDetails.getCountryId());
+            if (b) {
+                saveCountryDetails = null;
+                return saveCountryDetails;
+            }
+            country = getSession().get(Country.class, saveCountryDetails.getCountryId());
+        } else {
+            boolean b = checkDuplicatescountry(saveCountryDetails.getCountryName(), null);
+            if (b) {
+                saveCountryDetails = null;
+                return saveCountryDetails;
+            }
+            country = new Country();
+        }
+        country.setCompanyId(companyInfo);
+        country.setUseraccount_id(String.valueOf(userId));
+        country.setLocationId(String.valueOf(userId));
+        country.setCountryName(saveCountryDetails.getCountryName());
+        country.setStatus(saveCountryDetails.getStatus());
+        getSession().saveOrUpdate(country);
+    } catch (HibernateException e) {
+        e.printStackTrace();
+    }
+    return saveCountryDetails;
+
+}
