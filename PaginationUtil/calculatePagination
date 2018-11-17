@@ -1,0 +1,80 @@
+package com.hyva.util;
+
+import com.hyva.pojo.BasePojo;
+import com.hyva.pojo.PaginatedResponsePojo;
+/*
+* Created on 18/08/2017
+* for pagination
+* @Author Rahul Raj
+* */
+
+public class PaginationUtils {
+
+    //method to set the order
+    public static PageRequest setOrder(BasePojo basePojo){
+        PageRequest pageRequest;
+        if (basePojo.isLastPage()) {
+            pageRequest = new PageRequest(basePojo.getPageNo() * PaginationConstants.MAX_LIMIT, PaginationConstants.MAX_LIMIT + 1);
+            pageRequest.setProperty("ASC");
+        } else if (basePojo.isFirstPage()){
+//            pageRequest = new PageRequest(basePojo.getPageNo() * PaginationConstants.MAX_LIMIT, PaginationConstants.MAX_LIMIT + 1);
+            pageRequest = new PageRequest(0, PaginationConstants.MAX_LIMIT + 1);
+            pageRequest.setProperty("DESC");
+        } else if(basePojo.isNextPage()){
+            pageRequest = new PageRequest(basePojo.getPageNo() * (PaginationConstants.MAX_LIMIT+1), PaginationConstants.MAX_LIMIT + 1);
+            pageRequest.setProperty("DESC");
+        }
+        else {
+            pageRequest = new PageRequest(basePojo.getPageNo() * PaginationConstants.MAX_LIMIT, PaginationConstants.MAX_LIMIT + 1);
+            pageRequest.setProperty("DESC");
+        }
+        return pageRequest;
+    }
+    //method to calculate and set the pagination
+    public static void calculatePagination(int listSize, PaginatedResponsePojo paginatedResponsePojo, BasePojo basePojo) {
+
+
+        if (basePojo.isLastPage()) {
+            paginatedResponsePojo.setFirst(false);
+            paginatedResponsePojo.setLast(true);
+            paginatedResponsePojo.setNext(true);
+            paginatedResponsePojo.setPrev(true);
+
+        } else if (basePojo.isFirstPage() || basePojo.getPageNo() == 0) {
+            paginatedResponsePojo.setFirst(true);
+            if (listSize < PaginationConstants.MAX_LIMIT + 1) {
+                paginatedResponsePojo.setLast(true);
+                paginatedResponsePojo.setNext(true);
+            }
+            paginatedResponsePojo.setPrev(true);
+            paginatedResponsePojo.setPageNo(0);
+
+        } else {
+
+            if (listSize < PaginationConstants.MAX_LIMIT || listSize < PaginationConstants.MAX_LIMIT + 1) {
+                paginatedResponsePojo.setLast(true);
+                paginatedResponsePojo.setNext(true);
+                paginatedResponsePojo.setFirst(false);
+                paginatedResponsePojo.setPrev(false);
+            } else {
+                paginatedResponsePojo.setLast(false);
+                paginatedResponsePojo.setNext(false);
+                paginatedResponsePojo.setPrev(false);
+                paginatedResponsePojo.setFirst(false);
+
+            }
+            paginatedResponsePojo.setPageNo(basePojo.getPageNo());
+
+        }
+
+        if (listSize == 0) {
+            paginatedResponsePojo.setFirst(true);
+            paginatedResponsePojo.setLast(true);
+            paginatedResponsePojo.setNext(true);
+            paginatedResponsePojo.setPrev(true);
+            paginatedResponsePojo.setPageNo(0);
+
+        }
+    }
+
+}
