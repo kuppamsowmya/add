@@ -1,0 +1,356 @@
+package com.hyva.pojo;
+
+import com.hyva.accounts.hipos.response.dto.ItemDTO;
+import com.hyva.entities.CustomerPayment;
+import com.hyva.entities.ItemCategory;
+import com.hyva.entities.ServiceReceiveDelivary;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by tnataraj on 6/28/17.
+ */
+public class PaginatedResponsePojo {
+
+    private boolean first;
+    private boolean prev;
+    private boolean next;
+    private boolean last;
+    private Map<String,Double> doubleMap;
+    private int PageNo;
+    private List<ItemCategory> itemCategorys = new ArrayList<>();
+    private  List<AnalysisResponsePojo> analysisreportList;
+    private List<SalesReportListResponsePojo> salesReportList;
+    private List<SalesInvoiceDetailsResposePojo> salesInvoiceReportList;
+    private List<CustomerResponsePojo> customerResponseList;
+    private List<SalesPricingReportResponsePojo> salesPricingList;
+    private List<AgentResponsePojo> agentListing;
+    private  List<InventoryReportResponsePojo> ineventoryReportlist;
+    private List<SalesDeliverOrderDetailsPojo> salesDeliveryReportList;
+    private List<EstimatedPaymentDetailsPojo> estimatedPaymentDetailsPojos;
+    private List<ItemDTO> itemReportDto;
+    private List<ServiceReceiveDelivary> serviceReceiveDelivary;
+    private List<ViewLedgerResponsePojo> viewLedgerResponsePojos;
+    private double total;
+
+    public List<ItemCategory> getItemCategorys() {
+        return itemCategorys;
+    }
+
+    public void setItemCategorys(List<ItemCategory> itemCategorys) {
+        this.itemCategorys = itemCategorys;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public Map<String, Double> getDoubleMap() {
+        return doubleMap;
+    }
+
+    public void setDoubleMap(Map<String, Double> doubleMap) {
+        this.doubleMap = doubleMap;
+    }
+
+    public List<ViewLedgerResponsePojo> getViewLedgerResponsePojos() {
+        return viewLedgerResponsePojos;
+    }
+
+    public void setViewLedgerResponsePojos(List<ViewLedgerResponsePojo> viewLedgerResponsePojos) {
+        this.viewLedgerResponsePojos = viewLedgerResponsePojos;
+    }
+
+    public List<ServiceReceiveDelivary> getServiceReceiveDelivary() {
+        return serviceReceiveDelivary;
+    }
+
+    public void setServiceReceiveDelivary(List<ServiceReceiveDelivary> serviceReceiveDelivary) {
+        this.serviceReceiveDelivary = serviceReceiveDelivary;
+    }
+    private List jsonData;//generic for any table [{key:value },{key:value}]
+    List<DebtorsAgeing> salesDebtorsList;
+    List<CurrencyResponsePojo> currencyList;
+    List<CustomerResponsePojo> customerList;
+    List<LocationResponsePojo> locationList;
+
+
+    public List<SalesInvoiceDetailsResposePojo> getSalesInvoiceReportList() {
+        return salesInvoiceReportList;
+    }
+
+    public void setSalesInvoiceReportList(List<SalesInvoiceDetailsResposePojo> salesInvoiceReportList) {
+        this.salesInvoiceReportList = salesInvoiceReportList;
+    }
+
+    public List<CurrencyResponsePojo> getCurrencyList() {
+        return currencyList;
+    }
+
+    public void setCurrencyList(List<CurrencyResponsePojo> currencyList) {
+        this.currencyList = currencyList;
+    }
+
+    public List<CustomerResponsePojo> getCustomerList() {
+        return customerList;
+    }
+
+    public void setCustomerList(List<CustomerResponsePojo> customerList) {
+        this.customerList = customerList;
+    }
+
+    public List<LocationResponsePojo> getLocationList() {
+        return locationList;
+    }
+
+    public void setLocationList(List<LocationResponsePojo> locationList) {
+        this.locationList = locationList;
+    }
+
+    public List<DebtorsAgeing> getSalesDebtorsList() {
+        return salesDebtorsList;
+    }
+
+    public void setSalesDebtorsList(List<DebtorsAgeing> salesDebtorsList) {
+        this.salesDebtorsList = salesDebtorsList;
+    }
+
+    public List getJsonData() {return jsonData;}
+
+    public void setJsonData(List jsonData) {this.jsonData = jsonData;}
+
+    public List<InventoryReportResponsePojo> getIneventoryReportlist() {
+        return ineventoryReportlist;
+    }
+
+    public void setIneventoryReportlist(List<InventoryReportResponsePojo> ineventoryReportlist) {
+        this.ineventoryReportlist = ineventoryReportlist;
+    }
+
+    public List<AgentResponsePojo> getAgentListing() {
+        return agentListing;
+    }
+
+    public void setAgentListing(List<AgentResponsePojo> agentListing) {
+        this.agentListing = agentListing;
+    }
+
+    public List<SalesPricingReportResponsePojo> getSalesPricingList() {
+        return salesPricingList;
+    }
+
+    public void setSalesPricingList(List<SalesPricingReportResponsePojo> salesPricingList) {
+        this.salesPricingList = salesPricingList;
+    }
+
+    public List<CustomerResponsePojo> getCustomerResponseList() {
+        return customerResponseList;
+    }
+
+    public void setCustomerResponseList(List<CustomerResponsePojo> customerResponseList) {
+        this.customerResponseList = customerResponseList;
+    }
+
+    private List<SalesInvoiceDetailsResposePojo> supplierSalesReportList;
+    private  List<CreditorsAgeing> creditorsAgeingList;
+    private List<SupplierResponsePojo> supplierReportList;
+    private List<AppleItemPojo> AppleDTOLists=new ArrayList();
+    private  List<CustomerPayment> customerreceiptList;
+
+    public List<CustomerPayment> getCustomerreceiptList() {
+        return customerreceiptList;
+    }
+
+    public void setCustomerreceiptList(List<CustomerPayment> customerreceiptList) {
+        this.customerreceiptList = customerreceiptList;
+    }
+
+    public List<AppleItemPojo> getAppleDTOLists() {
+        return AppleDTOLists;
+    }
+
+    public void setAppleDTOLists(List<AppleItemPojo> appleDTOLists) {
+        AppleDTOLists = appleDTOLists;
+    }
+
+    public List<SalesReportListResponsePojo> getSalesReportList() {
+        return salesReportList;
+    }
+
+    public void setSalesReportList(List<SalesReportListResponsePojo> salesReportList) {
+        this.salesReportList = salesReportList;
+    }
+
+    public List<SupplierResponsePojo> getSupplierReportList() {
+        return supplierReportList;
+    }
+
+    public void setSupplierReportList(List<SupplierResponsePojo> supplierReportList) {
+        this.supplierReportList = supplierReportList;
+    }
+
+    public List<CreditorsAgeing> getCreditorsAgeingList() {
+        return creditorsAgeingList;
+    }
+
+    public void setCreditorsAgeingList(List<CreditorsAgeing> creditorsAgeingList) {
+        this.creditorsAgeingList = creditorsAgeingList;
+    }
+
+    public List<SalesInvoiceDetailsResposePojo> getSupplierSalesReportList() {
+        return supplierSalesReportList;
+    }
+
+    public void setSupplierSalesReportList(List<SalesInvoiceDetailsResposePojo> supplierSalesReportList) {
+        this.supplierSalesReportList = supplierSalesReportList;
+    }
+
+    public List<AnalysisResponsePojo> getAnalysisreportList() {
+        return analysisreportList;
+    }
+
+    public void setAnalysisreportList(List<AnalysisResponsePojo> analysisreportList) {
+        this.analysisreportList = analysisreportList;
+    }
+
+    /**
+     * Gets last.
+     *
+     * @return Value of last.
+     */
+    public boolean isLast() {
+        return last;
+    }
+
+    /**
+     * Sets new prev.
+     *
+     * @param prev New value of prev.
+     */
+    public void setPrev(boolean prev) {
+        this.prev = prev;
+    }
+
+    /**
+     * Sets new next.
+     *
+     * @param next New value of next.
+     */
+    public void setNext(boolean next) {
+        this.next = next;
+    }
+
+    /**
+     * Gets prev.
+     *
+     * @return Value of prev.
+     */
+    public boolean isPrev() {
+        return prev;
+    }
+
+    /**
+     * Sets new last.
+     *
+     * @param last New value of last.
+     */
+    public void setLast(boolean last) {
+        this.last = last;
+    }
+
+    /**
+     * Gets first.
+     *
+     * @return Value of first.
+     */
+    public boolean isFirst() {
+        return first;
+    }
+
+    /**
+     * Sets new first.
+     *
+     * @param first New value of first.
+     */
+    public void setFirst(boolean first) {
+        this.first = first;
+    }
+
+    /**
+     * Gets next.
+     *
+     * @return Value of next.
+     */
+    public boolean isNext() {
+        return next;
+    }
+
+    Object data;
+
+    /**
+     * Gets data.
+     *
+     * @return Value of data.
+     */
+    public Object getData() {
+        return data;
+    }
+
+    /**
+     * Sets new data.
+     *
+     * @param data New value of data.
+     */
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+
+    /**
+     * Gets PageNo.
+     *
+     * @return Value of PageNo.
+     */
+    public int getPageNo() {
+        return PageNo;
+    }
+
+    /**
+     * Sets new PageNo.
+     *
+     * @param PageNo New value of PageNo.
+     */
+    public void setPageNo(int PageNo) {
+        this.PageNo = PageNo;
+    }
+
+    public List<SalesDeliverOrderDetailsPojo> getSalesDeliveryReportList() {
+        return salesDeliveryReportList;
+    }
+
+    public void setSalesDeliveryReportList(List<SalesDeliverOrderDetailsPojo> salesDeliveryReportList) {
+        this.salesDeliveryReportList = salesDeliveryReportList;
+    }
+
+    public List<EstimatedPaymentDetailsPojo> getEstimatedPaymentDetailsPojos() {
+        return estimatedPaymentDetailsPojos;
+    }
+
+    public void setEstimatedPaymentDetailsPojos(List<EstimatedPaymentDetailsPojo> estimatedPaymentDetailsPojos) {
+        this.estimatedPaymentDetailsPojos = estimatedPaymentDetailsPojos;
+    }
+
+    public List<ItemDTO> getItemReportDto() {
+        return itemReportDto;
+    }
+
+    public void setItemReportDto(List<ItemDTO> itemReportDto) {
+        this.itemReportDto = itemReportDto;
+    }
+}
