@@ -1,0 +1,94 @@
+package com.hyva.util;
+
+/**
+ * Created by tnataraj on 6/26/17.
+ */
+public class PageRequest {
+
+    int offset;
+    int pageSize;
+    boolean order;
+    String property;
+
+
+    public PageRequest(int offset, int pageSize) {
+        this.offset = offset;
+        this.pageSize = pageSize;
+    }
+
+    public PageRequest() {
+    }
+
+    /**
+
+     * Gets pageSize.
+     *
+     * @return Value of pageSize.
+     */
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    /**
+     * Gets property.
+     *
+     * @return Value of property.
+     */
+    public String getProperty() {
+        return property;
+    }
+
+    /**
+     * Sets new order.
+     *
+     * @param order New value of order.
+     */
+    public void setOrder(boolean order) {
+        this.order = order;
+    }
+
+    /**
+     * Sets new offset.
+     *
+     * @param offset New value of offset.
+     */
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    /**
+     * Sets new property.
+     *
+     * @param property New value of property.
+     */
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @return Value of offset.
+     */
+    public int getOffset() {
+        return offset;
+    }
+
+    /**
+     * Gets order.
+     *
+     * @return Value of order.
+     */
+    public boolean isOrder() {
+        return order;
+    }
+
+    /**
+     * Sets new pageSize.
+     *
+     * @param pageSize New value of pageSize.
+     */
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+}
