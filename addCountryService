@@ -1,0 +1,19 @@
+  public CountryDTO createSaveCountryDetails(CountryDTO saveCountryDetails, int userId) throws JSONException, IOException {
+        CountryDTO countryDTO = null;
+        String status = null;
+        String failedmsg = "Cannot Able To  Save Country Try Once Again Or Please Contact Your Service Provider ";
+        String success = "Country has been Created SuccessFully";
+        if (buildType.equalsIgnoreCase(HinextSyncConstants.HI_NEXT_CLOUD)) {
+            status = hinextSyncService.addCountrySaaS(companyName, saveCountryDetails, HinextSyncConstants.SAVECOUNTRY);
+            if (!status.equals(HinextSyncConstants.PENDINGSTATUS)) {
+                saveCountryDetails = hiposDAO.saveOrUpDateCountry(saveCountryDetails, userId, companyInfo);
+                return saveCountryDetails;
+            } else {
+                countryDTO = new CountryDTO();
+                return countryDTO;
+            }
+        } else {
+            saveCountryDetails = hiposDAO.saveOrUpDateCountry(saveCountryDetails, userId, companyInfo);
+            return saveCountryDetails;
+        }
+    }
