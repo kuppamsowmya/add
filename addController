@@ -1,0 +1,9 @@
+ @RequestMapping(value = "/saveCountry",method = RequestMethod.POST,consumes ="application/json")
+    public ResponseEntity saveCountry(@RequestAttribute("companyName") String companyName,@RequestAttribute("userId") int userId ,
+                                      @RequestBody CountryDTO saveCountryDetails ) throws IOException, JSONException {
+        CountryDTO camDTO = null;
+        hiposService.setCompanyName(companyName);
+        hiposService.setCompanyInfo(hiposService.getCompanyInfoObj(userId));
+        camDTO = hiposService.createSaveCountryDetails(saveCountryDetails,userId);
+        return ResponseEntity.status(200).body(camDTO);
+    }
