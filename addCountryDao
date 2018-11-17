@@ -29,3 +29,48 @@ public CountryDTO saveOrUpDateCountry(CountryDTO saveCountryDetails,int userId,C
     return saveCountryDetails;
 
 }
+
+
+@Transactional
+    public List<CountryDTO> getCountryDtoObjectOrList(String companyName, CompanyInfo companyInfo, String countryName, Long countryId, PageRequest pageRequest,String type) {
+
+        List<CountryDTO> list = new ArrayList<>();
+        try {
+            Criteria cr = getSession().createCriteria(Country.class, "country");
+            if (!HiposUtil.isStringNullrEmpty(countryName)) {
+                cr.add(Restrictions.like("countryName", countryName, MatchMode.ANYWHERE));
+            }
+            if(countryId!=null){
+                cr.add(Restrictions.eq("countryId",countryId));
+            }
+            if(!HiposUtil.isStringNullrEmpty(type)) {
+                cr.add(Restrictions.eq("status",type));
+            }
+//            else{
+//                cr.add(Restrictions.eq("status","Active"));
+//            }
+            ProjectionList projectionList = Projections.projectionList();
+            projectionList.add(Projections.property("countryId"), "countryId");
+            projectionList.add(Projections.property("countryName"), "countryName");
+            projectionList.add(Projections.property("locationId"), "locationId");
+            projectionList.add(Projections.property("useraccount_id"), "useraccount_id");
+            projectionList.add(Projections.property("status"),"status");
+            cr.setProjection(projectionList)
+                    .setResultTransformer(new AliasToBeanResultTransformer(CountryDTO.class));
+            //cr.setMaxResults(20);
+            if(pageRequest!=null) {
+                cr.setFirstResult(pageRequest.getOffset());
+                cr.setMaxResults(pageRequest.getPageSize());
+                if (pageRequest.getProperty().equalsIgnoreCase("DESC")) {
+                    cr.addOrder(Order.desc("countryId"));
+                } else {
+                    cr.addOrder(Order.asc("countryId"));
+                }
+            }
+            list = cr.list();
+        } catch (HibernateException he) {
+            he.printStackTrace();
+        }
+        return list;
+    }
+
