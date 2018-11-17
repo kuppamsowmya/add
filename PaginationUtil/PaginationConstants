@@ -1,0 +1,3 @@
+public class PaginationConstants {
+    public static int MAX_LIMIT=14;
+}
