@@ -17,3 +17,104 @@
             return saveCountryDetails;
         }
     }
+
+
+public CountryDTO createSaveImportCountryDetails(CountryDTO saveCountryDetails, int userId) throws JSONException, IOException {
+        CountryDTO countryDetails = createSaveCountryDetails(saveCountryDetails,1);
+        return countryDetails;
+    }
+    
+    
+    public PaginatedResponsePojo retrieveCountryListByNameOrCode(String countryName, int custId, UserAccountSetup userAccObj, BasePojo basePojo, String type) {
+        PageRequest pageRequest = null;
+        pageRequest = PaginationUtils.setOrder(basePojo);
+        if (StringUtils.isNotEmpty(type)) {
+            if (StringUtils.equalsIgnoreCase(type, "InActive")) {
+                pageRequest = null;
+            }
+        }
+        List<CountryDTO> countryDTOList = hiposDAO.getCountryDtoObjectOrList(this.companyName, this.companyInfo, countryName, null, pageRequest, type);
+        PaginatedResponsePojo paginatedResponsePojo = new PaginatedResponsePojo();
+        PaginationUtils.calculatePagination(countryDTOList.size(), paginatedResponsePojo, basePojo);
+        paginatedResponsePojo.setData(countryDTOList);
+        return paginatedResponsePojo;
+    }
+    
+    
+     public void downloadCountryPdf(OutputStream outputStream,String countrySearchText,String statustype) {
+        try {
+            Font font1 = new Font(getcustomfont(), 12F, Font.BOLD);
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, outputStream);
+            document.open();
+            Chunk CONNECT = new Chunk(new LineSeparator(1, 100, Color.BLACK, Element.ALIGN_JUSTIFIED, 3f));
+            document.add(CONNECT);
+            document.add(new Paragraph("", font1));
+            Chunk CONNECT1 = new Chunk(new LineSeparator(1, 100, Color.WHITE, Element.ALIGN_JUSTIFIED, 3f));
+            document.add(CONNECT1);
+            PdfPTable table = createFirstTableCountry(countrySearchText,statustype);
+            table.setHeaderRows(1);
+            document.add(table);
+            document.add(CONNECT1);
+            Paragraph foot = new Paragraph();
+            Phrase ph5 = new Phrase("Terms And Condition:Terms                    Prepared By                                        Approved By   ", font1);
+            foot.add(ph5);
+            document.add(foot);
+            document.add(CONNECT);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public PdfPTable createFirstTableCountry(String countrySearchText,String statustype) {
+        Font font1 = new Font(getcustomfont(), 8, Font.NORMAL, Color.BLACK);
+        int a = 0;
+        PdfPTable tab = new PdfPTable(1);
+        Font f = new Font(getcustomfont(), 15, Font.BOLD, Color.WHITE);
+        PdfPTable table = new PdfPTable(a + 2);
+        Font font = new Font(getcustomfont(), 10, Font.NORMAL, Color.WHITE);
+        Color myColor = WebColors.getRGBColor("#326397");
+        PdfPCell p = new PdfPCell(new Phrase("Country", f));
+        p.setBackgroundColor(myColor);
+        tab.addCell(p);
+        PdfPCell pc2 = new PdfPCell(new Phrase("Country Name", font));
+        pc2.setBackgroundColor(myColor);
+        PdfPCell pc3 = new PdfPCell(new Phrase("status", font));
+        pc3.setBackgroundColor(myColor);
+        table.addCell(pc2);
+        table.addCell(pc3);
+        List<CountryDTO> CountryDTOList = hiposDAO.getCountryDtoObjectOrList(null,null,countrySearchText,null,null,statustype);
+        table.setWidthPercentage(100);
+        for (CountryDTO country : CountryDTOList) {
+            table.addCell(new Phrase(country.getCountryName()+ "", font1));
+            table.addCell(new Phrase(country.getStatus() + "", font1));
+        }
+        return table;
+    }
+    
+    
+     public void downloadCountryExcelSheet(OutputStream out,String countrySearchText,String statustype) {
+        try {
+            List<CountryDTO> countrySearchList =  hiposDAO.getCountryDtoObjectOrList( null,this.companyInfo,countrySearchText,null, null,statustype);
+            HSSFWorkbook hwb = new HSSFWorkbook();
+            HSSFSheet sheet = hwb.createSheet("First Sheet");
+            HSSFRow headerRow1 = sheet.createRow(0);
+            headerRow1.createCell(0).setCellValue("countryName");
+            headerRow1.createCell(1).setCellValue("status");
+            int i=0;
+            for (CountryDTO country : countrySearchList) {
+                HSSFRow row = sheet.createRow(++i);
+                row.createCell(0).setCellValue(country.getCountryName());
+                row.createCell(1).setCellValue(country.getStatus());
+            }
+
+            hwb.write(out);
+            out.close();
+        } catch (IOException ioex) {
+            ioex.printStackTrace();
+        } catch (Exception gex) {
+            gex.printStackTrace();
+        }
+    }
